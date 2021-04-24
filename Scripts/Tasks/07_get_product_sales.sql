@@ -9,7 +9,7 @@
 -- for specific outlet type
 CREATE OR REPLACE FUNCTION get_product_sales (
     product int,
-    _outlet_type varchar,
+    outlet varchar,
     after_date date DEFAULT earliest_date('purchase_time', 'purchase'),
     before_date date DEFAULT latest_date('purchase_time', 'purchase')
 )
@@ -34,7 +34,7 @@ BEGIN
     WHERE
         p.purchase_time BETWEEN after_date AND before_date
         AND p.product_id = product
-        AND ro.outlet_type = _outlet_type;
+        AND ro.outlet_type = outlet;
 END;
 $$
 

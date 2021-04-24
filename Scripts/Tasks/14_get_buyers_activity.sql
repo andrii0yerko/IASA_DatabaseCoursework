@@ -66,7 +66,7 @@ END;
 $$
 
 -- for specific outlet type
-CREATE OR REPLACE FUNCTION get_buyers_activity (_outlet_type varchar)
+CREATE OR REPLACE FUNCTION get_buyers_activity (outlet varchar)
     RETURNS TABLE (
             customer_id int,
             customer_name varchar,
@@ -88,7 +88,7 @@ BEGIN
         JOIN customer c ON p.customer_id = c.customer_id
         JOIN retail_outlet ro ON ro.retail_outlet_id = p.retail_outlet_id 
     WHERE
-        ro.outlet_type = _outlet_type
+        ro.outlet_type = outlet
     GROUP BY
         c.customer_id, c.full_name, c.phone
     ORDER BY

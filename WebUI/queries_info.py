@@ -13,10 +13,11 @@ queries = {
             ('before_date', 'date', False)
         ],
     'get_buyers_activity': [
+            ('outlet', 'text', True)
         ],
     'get_product_buyers_by_outlet': [
             ('product', 'number', False),
-            ('outlet', 'number', False),
+            ('outlet', 'text', False),
             ('after_date', 'date', True),
             ('before_date', 'date', True),
         ],
@@ -38,11 +39,11 @@ queries = {
             ('before_date', 'date', True),
         ],
     'get_salaries': [
-            ('outlet', 'number', False),
+            ('outlet', 'text', True),
         ],
     'get_product_sales': [
             ('product', 'number', False),
-            ('_outlet_type', 'text', True),
+            ('outlet', 'text', True),
             ('after_date', 'date', True),
             ('before_date', 'date', True),
         ],

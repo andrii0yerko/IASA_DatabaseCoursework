@@ -42,9 +42,9 @@ $$
 -- for specific outlet type
 CREATE OR REPLACE FUNCTION get_product_buyers_by_outlet (
     product int,
-    _outlet_type varchar,
-    after_date date DEFAULT NULL,
-    before_date date DEFAULT NULL
+    outlet varchar,
+    after_date date DEFAULT earliest_date('purchase_time', 'purchase'),
+    before_date date DEFAULT latest_date('purchase_time', 'purchase')
 )
     RETURNS TABLE (
             customer_id int,
@@ -59,12 +59,13 @@ BEGIN
         c.full_name,
         c.phone
     FROM
-        purchases_by_period (after_date, before_date) p
+        purchase p
         JOIN customer c ON p.customer_id = c.customer_id
         JOIN retail_outlet ro ON ro.retail_outlet_id = p.retail_outlet_id
     WHERE
-        product_id = product
-        AND ro.outlet_type = _outlet_type;
+        p.purchase_time BETWEEN after_date AND before_date
+        AND product_id = product
+        AND ro.outlet_type = outlet;
 END;
 $$
 

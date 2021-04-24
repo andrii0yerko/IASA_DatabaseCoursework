@@ -62,9 +62,18 @@ BEGIN
         FULL OUTER JOIN supply_aggregated s ON
             p.retail_outlet_id = s.retail_outlet_id
             AND p.product_id = s.product_id
-        LEFT OUTER JOIN products_availability pa ON
-            p.retail_outlet_id = pa.retail_outlet_id
-            AND p.product_id = pa.product_id
+        LEFT OUTER JOIN products_availability pa ON (
+            CASE WHEN p.retail_outlet_id IS NOT NULL THEN
+                p.retail_outlet_id
+            WHEN s.retail_outlet_id IS NOT NULL THEN
+                s.retail_outlet_id
+            END) = pa.retail_outlet_id
+            AND (
+                CASE WHEN p.product_id IS NOT NULL THEN
+                    p.product_id
+                WHEN s.product_id IS NOT NULL THEN
+                    s.product_id
+                END) = pa.product_id
     ORDER BY
         outlet, product;
 END;

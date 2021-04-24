@@ -3,7 +3,7 @@
 -- торговим точкам заданого типу, по конкретній торговій точці.                --
 ---------------------------------------------------------------------------------
 
--- drop function get_salaries(varchar)
+-- drop function get_salaries()
 
 -- for specific outlet
 CREATE OR REPLACE FUNCTION get_salaries (outlet int)
@@ -35,12 +35,12 @@ END;
 $$
 
 -- for specific outlet type
-CREATE OR REPLACE FUNCTION get_salaries (_outlet_type varchar)
+CREATE OR REPLACE FUNCTION get_salaries (outlet varchar)
     RETURNS TABLE (
             worker_name varchar,
             "position" varchar,
             "salary" money,
-            "outlet" int
+            "outlet_id" int
 )
     LANGUAGE plpgsql
     AS $$
@@ -55,14 +55,14 @@ BEGIN
         worker w
         JOIN retail_outlet ro ON w.retail_outlet_id = ro.retail_outlet_id
     WHERE
-        ro.outlet_type = _outlet_type
+        ro.outlet_type = outlet
         OR ro.part_of IN (
             SELECT
                 ro2.retail_outlet_id
             FROM
                 retail_outlet ro2
             WHERE
-                ro2.outlet_type = _outlet_type);
+                ro2.outlet_type = outlet);
 END;
 $$
 
@@ -72,7 +72,7 @@ CREATE OR REPLACE FUNCTION get_salaries ()
             worker_name varchar,
             "position" varchar,
             "salary" money,
-            "outlet" int
+            "outlet_id" int
 )
     LANGUAGE plpgsql
     AS $$

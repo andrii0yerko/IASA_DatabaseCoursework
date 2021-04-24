@@ -1,6 +1,6 @@
 {% extends "table.html" %}
 {% block form %}
-  <form method="GET" align="center">
+  <form method="GET" align="center" style="margin-bottom: 20px;">
     {% for (name, type, nullable) in form_data %}
         <p> {{ name.replace('_', ' ').title() }} 
         
@@ -11,6 +11,6 @@
         <br>
         <input type="{{ type }}" name="{{ name }}" value="{{ args[name] if name in args else '' }}" /></p>
     {% endfor %}
-    <input type="submit" value="Get">
+    <input type="submit" value="Get" class="btn btn-outline-primary">
   </form>
 {% endblock %}
