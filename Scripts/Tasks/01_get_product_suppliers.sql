@@ -4,7 +4,7 @@
 -- співпраці, або за вказаний період.                                          --
 ---------------------------------------------------------------------------------
 
---drop function get_product_suppliers(int, int, date,date)
+--drop function get_product_suppliers(int, int, date, date)
 CREATE OR REPLACE FUNCTION get_product_suppliers (
     product int,
     minimal_amount int DEFAULT 0,
@@ -38,3 +38,4 @@ $$
 --examples
 --SELECT (get_product_suppliers (19, 300)).*;
 --SELECT (get_product_suppliers (19, 300, '2021-01-30')).*;
+--SELECT (get_product_suppliers (after_date => '2021-01-30', product => 19)).*;

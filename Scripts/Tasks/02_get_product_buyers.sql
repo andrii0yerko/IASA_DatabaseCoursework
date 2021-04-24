@@ -3,7 +3,7 @@
 -- за певний період або зробили покупку товару в обсязі, не менше заданого.    --
 ---------------------------------------------------------------------------------
 
---drop function get_product_buyers(int, int, date,date)
+--drop function get_product_buyers(int, int, date, date)
 CREATE OR REPLACE FUNCTION get_product_buyers (
     product int,
     minimal_amount int DEFAULT 0,
