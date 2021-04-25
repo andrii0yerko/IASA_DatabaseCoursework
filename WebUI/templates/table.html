@@ -44,24 +44,38 @@
     <td><a href="/query/get_workers_productivity"> Workers Productivity </a></td>
     </tr>
   </table>
-
+  
   <h2 align="center"> {{ title }} </h2>
 
   {% block form %}{% endblock %}
 
-  <table align='center' class='table' style='width: 50%'>
+  <table align='center' class='table' style='width: 60%'>
     {% if columns|length > 0 %}
       <thead class='thead-light'>
       <tr>
-      {% if id_first %}
-        <th scope='col'>id</th>
-      {% else %}
-        <th scope='col'>{{ columns[0] }}</th>
-      {% endif %}
+        <th scope='col'>
+          <button onclick="replaceUrl( '{{ columns[0] }}' )"
+            type="button" class="btn btn-outline-secondary" style="color:black; border: none; outline: none;" 
+            data-toggle="tooltip" data-placement="top" title="Sort by {{ columns[0].replace('_', ' ').title() }}"
+          >
+          {% if id_first %}
+            id
+          {% else %}
+            {{ columns[0].replace('_', ' ').title() }}
+          {% endif %}
+          </button
+        </th>
 
-      {% for col in columns[1:] %}
-          <th scope='col'> {{ col }} </th>
-      {% endfor %}
+        {% for col in columns[1:] %}
+          <th scope='col'>
+            <button onclick="replaceUrl( '{{ col }}' )"
+              type="button" class="btn btn-outline-secondary" style="color:black; border: none; outline: none;" 
+              data-toggle="tooltip" data-placement="top" title="Sort by {{ col.replace('_', ' ').title() }}"
+            >
+            {{ col.replace('_', ' ').title() }}
+            </button>
+          </th>
+        {% endfor %}
       </tr>
       </thead>
       {% for row in table %}
@@ -69,7 +83,7 @@
           {% for element in row %}
               <td> 
                   {% if element %}
-                  {{element}}                
+                    {{element}}                
                   {% endif %}
               </td>
           {% endfor %}
@@ -77,5 +91,23 @@
       {% endfor %}
     </table>
   {% endif %}
+
+
+
+  <script>
+      function replaceUrl(column) {
+        let nextURL = window.location.href.split(/[\?&]order=[^&]*/).join('');
+        console.log(nextURL);
+        if (nextURL.includes('?')) {
+          nextURL += '&order=' + column;
+        }
+        else {
+          nextURL += '?order=' + column;
+        }
+        window.location.href = nextURL;
+        window.location.assign(nextURL);
+        window.location.replace(nextURL);
+    }
+  </script>
 </body>
 </html>

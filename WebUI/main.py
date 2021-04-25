@@ -16,8 +16,11 @@ def select_table(table_name, is_table=True):
         abort(404)
         
     with conn.cursor() as cursor:
-        cursor.execute('SELECT * FROM {} ORDER BY 1'.format(table_name))
-        columns = [desc[0].replace('_', ' ').title() for desc in cursor.description]
+        sql = 'SELECT * FROM {}'.format(table_name)
+        if 'order' in request.args:
+            sql += ' ORDER BY ' + request.args['order'].split()[0]
+        cursor.execute(sql)
+        columns = [desc[0] for desc in cursor.description]
         records = cursor.fetchall()
     
     if not is_table:
@@ -35,7 +38,7 @@ def run_query(query_name):
     if len(queries[query_name]) == 0:  # if the query cannot have parameters, run it as a simple select
         query = f'{query_name}()'
         return select_table(query, False)
-    
+
     args = dict()
     format_list = []
     
@@ -60,8 +63,11 @@ def run_query(query_name):
     
     if run_query:
         with conn.cursor() as cursor:
-            cursor.execute(f"SELECT * FROM {query_name}({format_string})", list(args.values()))
-            columns = [desc[0].replace('_', ' ').title() for desc in cursor.description]
+            sql = f"SELECT * FROM {query_name}({format_string})"
+            if 'order' in request.args:
+                sql += ' ORDER BY ' + request.args['order'].split()[0]
+            cursor.execute(sql, list(args.values()))
+            columns = [desc[0] for desc in cursor.description]
             records = cursor.fetchall()
     else:
         columns = []

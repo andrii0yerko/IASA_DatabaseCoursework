@@ -2,14 +2,17 @@
 {% block form %}
   <form method="GET" align="center" style="margin-bottom: 20px;">
     {% for (name, type, nullable) in form_data %}
-        <p> {{ name.replace('_', ' ').title() }} 
-        
-        {% if nullable %}
-        (optional)
-        {% endif %}
-
-        <br>
-        <input type="{{ type }}" name="{{ name }}" value="{{ args[name] if name in args else '' }}" /></p>
+        <div class="form-group">
+            <label for="{{ name }}">
+                {{ name.replace('_', ' ').title() }}
+                {% if nullable %}
+                (optional)
+                {% endif %}
+            </label>
+            <br>
+            <input type="{{ type }}" id="{{ name }}"
+             name="{{ name }}" value="{{ args[name] if name in args else '' }}" />
+        </div>
     {% endfor %}
     <input type="submit" value="Get" class="btn btn-outline-primary">
   </form>
