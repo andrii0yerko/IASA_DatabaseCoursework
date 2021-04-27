@@ -5,7 +5,7 @@ import psycopg2
 
 from queries_info import table_names, queries, dropdown_queries
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 conn = psycopg2.connect(dbname='postgres', user='postgres', 
                         password='password', host='localhost')
 
@@ -80,15 +80,19 @@ def run_query(query_name):
 
 @app.route('/')
 def index():
-    return render_template('table.html', columns=[],
-                           title="Welcome to TorgOrg Database GUI!" )
+    return render_template('index.html', title="Welcome to TorgOrg Database GUI!" )
+
+
+@app.errorhandler(404)
+def not_found(e):
+  return render_template("base.html", title="404 Not Found")
 
 
 def generate_dropdown(argname):
     records = []
     if argname == 'outlet':
         records += generate_dropdown('_outlet_type')
-        records += generate_dropdown('outlet_id')
+        records += generate_dropdown('_outlet_id')
     if argname in dropdown_queries:
          with conn.cursor() as cursor:
              cursor.execute(dropdown_queries[argname])

@@ -1,8 +1,10 @@
 {% extends "table.html" %}
 {% block form %}
-  <form method="GET" align="center" style="margin-bottom: 20px;">
+  <form method="GET">
+
+    <div class="form-row">
     {% for (name, type, nullable) in form_data %}
-        <div class="form-group">
+      <div class="form-group col-md-2">
             <label for="{{ name }}">
                 {{ name.replace('_', ' ').title() }}
                 {% if nullable %}
@@ -10,17 +12,22 @@
                 {% endif %}
             </label>
             <br>
-              <input list="{{ name }}_list" type="{{ type }}" id="{{ name }}"
+              <input list="{{ name }}_list" type="{{ type }}" id="{{ name }}" class="form-control"
               name="{{ name }}" value="{{ args[name] if name in args else '' }}" />
-              
+
               <datalist id="{{ name }}_list">
               {% for val, key in dropdown(name) %}
                 <option value="{{ val }}"> {{ key }} </option>
               {% endfor %}
               </datalist>
-
-        </div>
+      </div>
     {% endfor %}
-    <input type="submit" value="Get" class="btn btn-outline-primary">
+
+    <div class="form-group col-md-2">
+      <br>
+      <input id="submit_btn" type="submit" value="Get" class="btn btn-outline-dark" style="margin-top: 1ex;">
+    </div>
+    </div>
+
   </form>
 {% endblock %}

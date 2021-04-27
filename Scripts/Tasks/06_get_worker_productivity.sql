@@ -6,9 +6,9 @@
 --DROP FUNCTION get_worker_productivity
 CREATE OR REPLACE FUNCTION get_worker_productivity (
     _worker_id int,
-    outlet_id int DEFAULT NULL,
-    after_date date DEFAULT NULL,
-    before_date date DEFAULT NULL
+    _outlet_id int DEFAULT NULL,
+    after_date date DEFAULT earliest_date('purchase_time', 'purchase'),
+    before_date date DEFAULT latest_date('purchase_time', 'purchase')
 )
     RETURNS TABLE (
             worker_name varchar,
@@ -17,8 +17,9 @@ CREATE OR REPLACE FUNCTION get_worker_productivity (
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    IF outlet_id IS NULL THEN
-        outlet_id := (
+    
+    IF _outlet_id IS NULL THEN
+        _outlet_id := (
             SELECT
                 retail_outlet_id
             FROM
@@ -31,13 +32,14 @@ BEGIN
         s.worker_name,
         s.number_of_sales
     FROM
-        (SELECT (get_workers_productivity (NULL, after_date, before_date)).*) AS s
+        get_workers_productivity(NULL, after_date, before_date) AS s
     WHERE
         s.worker = _worker_id
-        AND s.outlet_id = outlet_id;
+        AND s.outlet_id = _outlet_id;
 END;
 $$
 
+get_workers_productivity(NULL,)
 -- examples
 --SELECT (get_worker_productivity (15)).*;
 

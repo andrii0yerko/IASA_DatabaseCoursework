@@ -1,55 +1,8 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  </head>
-<body>
-  <table cellpadding=8px align='center' style="padding: 15px; border-spacing: 0;">
-    <tr>
-    <td><a href="/select/customer">Customers</a></td>
-    <td><a href="/select/worker">Workers</a></td>
-    <td><a href="/select/purchase">Purchases</a></td>
-    <td><a href="/select/retail_outlet">Outlets</a></td>
-    <td><a href="/select/products_description">Products</a></td>
-    <td><a href="/select/supply">Supplies</a></td>
-    <td><a href="/select/supply_request">Requests</a></td>
-    </tr>
-  </table>
+{% extends "base.html" %}
 
-  <table cellpadding=8px align='center' style="padding: 15px; border-spacing: 0;">
-    <tr>
-    <td><a href="/query/get_buyers_activity"> Buyers Activity </a></td>
-    <td><a href="/query/get_product_buyers_by_outlet"> Product Buyers By Outlet  </a></td>
-    <td><a href="/query/get_product_buyers"> Product Buyers </a></td>
-    <td><a href="/query/get_product_turnover"> Product Turnover </a></td>
-    <td><a href="/query/get_product_sales"> Product Sales </a></td>
-    </tr>
-  </table>
-  <table cellpadding=8px align='center' style="padding: 15px; border-spacing: 0;">
-    <tr>
-    <td><a href="/query/get_product_prices"> Product Prices </a></td>
-    <td><a href="/query/get_products_in_outlet"> Products In Outlet </a></td>
-    <td><a href="/query/get_supply_by_request"> Supply By Request </a></td>
-    <td><a href="/query/get_product_suppliers"> Product Suppliers </a></td>
-    <td><a href="/query/get_product_supply"> Product Supply </a></td>
-    </tr>
-  </table>
-  <table cellpadding=8px align='center' style="padding: 15px; border-spacing: 0;">
-    <tr>
-    <td><a href="/query/get_outlet_profitability"> Outlet Profitability </a></td>
-    <td><a href="/query/get_sales_square_ratio"> Sales Square Ratio </a></td>
-    <td><a href="/query/get_salaries"> Salaries </a></td>
-    <td><a href="/query/get_worker_productivity"> Worker Productivity </a></td>
-    <td><a href="/query/get_workers_productivity"> Workers Productivity </a></td>
-    </tr>
-  </table>
-  
-  <h2 align="center"> {{ title }} </h2>
-
-  {% block form %}{% endblock %}
-
-  <table align='center' class='table' style='width: 60%'>
+{% block content %}
+  <div class="table-responsive">
+  <table class='table'>
     {% if columns|length > 0 %}
       <thead class='thead-light'>
       <tr>
@@ -78,6 +31,7 @@
         {% endfor %}
       </tr>
       </thead>
+      <tbody>
       {% for row in table %}
           <tr>
           {% for element in row %}
@@ -89,9 +43,10 @@
           {% endfor %}
           </tr>
       {% endfor %}
+      </tbody>
     </table>
   {% endif %}
-
+  </div>
 
 
   <script>
@@ -109,5 +64,4 @@
         window.location.replace(nextURL);
     }
   </script>
-</body>
-</html>
+{% endblock %}

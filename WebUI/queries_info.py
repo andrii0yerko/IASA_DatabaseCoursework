@@ -49,7 +49,7 @@ queries = {
         ],
     'get_worker_productivity': [
             ('_worker_id', 'number', False),
-            ('outlet_id', 'number', True),
+            ('_outlet_id', 'number', True),
             ('after_date', 'date', True),
             ('before_date', 'date', True),
         ],
@@ -63,11 +63,11 @@ queries = {
             ('outlet', 'text', True),
         ],
     'get_products_in_outlet': [
-            ('outlet_id', 'number', False),
+            ('_outlet_id', 'number', False),
         ],
     'get_product_buyers': [
             ('product', 'number', False),
-            ('minimal_amount', 'number', False),
+            ('minimal_amount', 'number', True),
             ('after_date', 'date', True),
             ('before_date', 'date', True),
         ],
@@ -123,7 +123,7 @@ dropdown_queries = {
             sr.request_date DESC;
     ''',
     
-    'outlet_id': '''
+    '_outlet_id': '''
         SELECT
             ro.retail_outlet_id,
             CONCAT(ro.outlet_type, ' at ', ro.address)
@@ -139,18 +139,5 @@ dropdown_queries = {
             CONCAT('All of the ', ro.outlet_type, ' type')
         FROM
             retail_outlet ro;
-    ''',
-    
-    # 'outlet': '''
-    #     SELECT DISTINCT
-    #         ro.outlet_type
-    #     FROM
-    #         retail_outlet ro
-    #     UNION
-    #     SELECT
-    #         ro.retail_outlet_id::varchar,
-    #         CONCAT(ro.outlet_type, ' at ', ro.address)
-    #     FROM
-    #         retail_outlet ro;
-    # '''
+    '''
 }
