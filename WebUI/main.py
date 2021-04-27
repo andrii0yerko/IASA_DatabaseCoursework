@@ -3,7 +3,7 @@ import os
 from flask import abort, Flask, render_template, request
 import psycopg2
 
-from queries_info import table_names, queries
+from queries_info import table_names, queries, dropdown_queries
 
 app = Flask(__name__)
 conn = psycopg2.connect(dbname='postgres', user='postgres', 
@@ -83,6 +83,19 @@ def index():
     return render_template('table.html', columns=[],
                            title="Welcome to TorgOrg Database GUI!" )
 
+
+def generate_dropdown(argname):
+    records = []
+    if argname == 'outlet':
+        records += generate_dropdown('_outlet_type')
+        records += generate_dropdown('outlet_id')
+    if argname in dropdown_queries:
+         with conn.cursor() as cursor:
+             cursor.execute(dropdown_queries[argname])
+             records = cursor.fetchall()
+    return records
+
+app.jinja_env.globals.update(dropdown=generate_dropdown)
 
 if __name__ == '__main__':
     app.run(

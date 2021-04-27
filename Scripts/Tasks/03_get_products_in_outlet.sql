@@ -4,7 +4,7 @@
 
 --drop function get_products_in_outlet;
 CREATE OR REPLACE FUNCTION get_products_in_outlet (
-    outlet int
+    outlet_id int
 )
     RETURNS TABLE (
             product int,
@@ -24,14 +24,14 @@ BEGIN
         products_availability pa
         JOIN products_description pd ON pa.product_id = pd.product_id
     WHERE
-        pa.retail_outlet_id = outlet
+        pa.retail_outlet_id = outlet_id
         OR pa.retail_outlet_id IN (
             SELECT
                 retail_outlet_id
             FROM
                 retail_outlet
             WHERE
-                part_of = outlet);
+                part_of = outlet_id);
 END;
 $$
 

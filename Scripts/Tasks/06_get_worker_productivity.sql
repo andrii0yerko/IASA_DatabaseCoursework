@@ -3,9 +3,10 @@
 -- торговельної точки за вказаний період.                                      --
 ---------------------------------------------------------------------------------
 
+--DROP FUNCTION get_worker_productivity
 CREATE OR REPLACE FUNCTION get_worker_productivity (
     _worker_id int,
-    outlet int DEFAULT NULL,
+    outlet_id int DEFAULT NULL,
     after_date date DEFAULT NULL,
     before_date date DEFAULT NULL
 )
@@ -16,8 +17,8 @@ CREATE OR REPLACE FUNCTION get_worker_productivity (
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    IF outlet IS NULL THEN
-        outlet := (
+    IF outlet_id IS NULL THEN
+        outlet_id := (
             SELECT
                 retail_outlet_id
             FROM
@@ -33,7 +34,7 @@ BEGIN
         (SELECT (get_workers_productivity (NULL, after_date, before_date)).*) AS s
     WHERE
         s.worker = _worker_id
-        AND s.outlet_id = outlet;
+        AND s.outlet_id = outlet_id;
 END;
 $$
 

@@ -10,8 +10,15 @@
                 {% endif %}
             </label>
             <br>
-            <input type="{{ type }}" id="{{ name }}"
-             name="{{ name }}" value="{{ args[name] if name in args else '' }}" />
+              <input list="{{ name }}_list" type="{{ type }}" id="{{ name }}"
+              name="{{ name }}" value="{{ args[name] if name in args else '' }}" />
+              
+              <datalist id="{{ name }}_list">
+              {% for val, key in dropdown(name) %}
+                <option value="{{ val }}"> {{ key }} </option>
+              {% endfor %}
+              </datalist>
+
         </div>
     {% endfor %}
     <input type="submit" value="Get" class="btn btn-outline-primary">
