@@ -1,13 +1,20 @@
 import os
 
 from flask import abort, Flask, render_template, request
+from werkzeug.security import generate_password_hash, check_password_hash
 import psycopg2
 
 from queries_info import table_names, queries, dropdown_queries
 
-app = Flask(__name__, static_folder='static')
-conn = psycopg2.connect(dbname='postgres', user='postgres', 
-                        password='password', host='localhost')
+app = Flask(__name__, static_folder='../static')
+
+connection_params = {
+    'dbname': os.environ['DATABASE_NAME'],
+    'host': os.environ['DATABASE_URL'],
+    'user': os.environ['ADMIN_USERNAME'],
+    'user': os.environ['ADMIN_PASSWORD']
+}
+conn = psycopg2.connect(**connection_params)
 
 
 @app.route('/select/<string:table_name>')
@@ -88,6 +95,12 @@ def not_found(e):
   return render_template("base.html", title="404 Not Found")
 
 
+@app.errorhandler(500)
+def internal_error(e):
+    conn.rollback()
+    return render_template("500.html")
+
+
 def generate_dropdown(argname):
     records = []
     if argname == 'outlet':
@@ -100,6 +113,7 @@ def generate_dropdown(argname):
     return records
 
 app.jinja_env.globals.update(dropdown=generate_dropdown)
+
 
 if __name__ == '__main__':
     app.run(
