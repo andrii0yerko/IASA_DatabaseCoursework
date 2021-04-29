@@ -47,6 +47,3 @@ Now you can run application with:
 ```bash
 python3 main.py
 ```
-
-Your postgres username and password are used for admin
-authorization by default.
