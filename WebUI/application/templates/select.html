@@ -1,0 +1,33 @@
+{% extends "table.html" %}
+
+{% block head %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+        <h1 class="h2">{{ title }}</h1>
+        {% if not current_user.is_anonymous %}
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+            <button onclick='redirect("insert");' class="btn btn-sm btn-outline-secondary">Insert</button>
+            <button onclick='redirect("edit");' class="btn btn-sm btn-outline-secondary">Edit</button>
+            <button onclick='redirect("delete");' class="btn btn-sm btn-outline-secondary">Delete</button>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <script> 
+        function redirect(action) {
+            let nextURL = window.location.href.split(/[\?].*/).join('');
+            if (action == 'insert') {
+                nextURL += '/insert';
+            }
+            else if (action == 'edit') {
+                nextURL += '/edit';
+            }
+            else if (action == 'delete') {
+                nextURL += '/delete';
+            }
+            window.location.href = nextURL;
+            window.location.assign(nextURL);
+            window.location.replace(nextURL);
+        }
+      </script>
+{% endblock %}

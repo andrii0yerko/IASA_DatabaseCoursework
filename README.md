@@ -8,7 +8,7 @@ _SQL Scripts are Postgres-specific, and won't run in other DBMS_
 
 All database-related scripts are placed in the `Scripts` folder.
 
-Run `Utils/create_tables.sql` first and then all the scripts from `Tasks` in order of numbering.
+Run `Utils/create_tables.sql` first and then all the scripts from `Tasks` in order of numbering. For CRUD with WebUI run `Utils/webui_crud_support.sql`.
 
 In case you need some data for demonstration, then tables can be filled by calling scripts from `Utils/Inserts` (generated with [Mockaroo](https://www.mockaroo.com/)) and then `Utils/generators.sql` for filling tables that use related data (notice, that it uses random for generation, so results may differ from run to run)
 
@@ -41,9 +41,14 @@ export ADMIN_PASSWORD="password"
 export DATABASE_NAME="postgres"
 # url of your database server
 export DATABASE_URL="localhost"
+# application secret key
+export SECRET_KEY="my-secret-key"
 ```
 
 Now you can run application with:
 ```bash
 python3 main.py
 ```
+
+Your postgres username and password are used for admin
+authorization by default.

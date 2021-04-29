@@ -19,11 +19,24 @@
   <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ url_for('index') }}"><span data-feather="chevron-right"></span> TorgOrg <span data-feather="chevron-left"></span></a>
-      <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-          <a class="nav-link" href="/admin">Admin panel</a>
-        </li>
-      </ul>
+      <div class="navbar-nav px-3">
+        <div class='container'>
+          <div class='row'>
+            {% if current_user.is_anonymous %}
+            <div class="nav-item text-nowrap">
+              <a class="nav-link" href="/login">Sign in</a>
+            </div>
+            {% else %}
+            <div class="nav-item text-nowrap col-sm">
+              <a class="nav-link" href="/admin">Admin panel</a>
+            </div>
+            <div class="nav-item text-nowrap">
+              <a class="nav-link" href="/logout">Logout</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </nav>
 
     <div class="container-fluid">
@@ -32,43 +45,49 @@
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link" href="/select/worker">
+                <a class="nav-link" href="/table/worker">
                    <span data-feather="users"></span>
                    Workers
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/select/retail_outlet">
+                <a class="nav-link" href="/table/retail_outlet">
                   <span data-feather="home"></span>
                   Outlets
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/select/supply_request">
+                <a class="nav-link" href="/table/supply_request">
                   <span data-feather="file"></span>
                   Requests
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/select/supply">
-                  <span data-feather="package"></span>
+                <a class="nav-link" href="/table/supply">
+                  <span data-feather="truck"></span>
                   Supply
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/select/products_description">
+                <a class="nav-link" href="/table/products_availability">
+                  <span data-feather="package"></span>
+                  Products Availability
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/table/products_description">
                   <span data-feather="shopping-bag"></span>
                   Products
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/select/purchase">
+                <a class="nav-link" href="/table/purchase">
                   <span data-feather="shopping-cart"></span>
                   Purchases
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/select/customer">
+                <a class="nav-link" href="/table/customer">
                   <span data-feather="users"></span>
                   Customers
                 </a>
@@ -193,13 +212,24 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="border-bottom">
-          {% block head %}
-            <h1 class="h2">{{ title }}</h1>
-            <br>
-            {% block form %}
+            {% block head %}
+              <h1 class="h2">{{ title }}</h1>
+              <br>
+              {% block form %}
+              {% endblock %}
             {% endblock %}
-          {% endblock %}
+            
+            {% block flashed_msg %}
+              {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info" role="alert">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+              {% endwith %}
+            {% endblock %}
           </div>
+
           {% block content %}
           {% endblock %}
           

@@ -1,0 +1,29 @@
+{% extends 'content_form.html' %}
+
+{% block form %}
+<form method="GET">
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="id_form">
+            {{ id_name.replace('_', ' ').title() }}
+            {% if nullable %}
+            (optional)
+            {% endif %}
+        </label>
+        <br>
+        <input list="id_list" type="number" id="id_form" class="form-control"
+        name="{{ id_name }}" value="{{ id_val if id_val else ''}}" />
+
+        <datalist id="id_list">
+        {% for val, key in dropdown(id_name) %}
+        <option value="{{ val }}"> {{ key }} </option>
+        {% endfor %}
+        </datalist>
+      </div>
+      <div class="form-group col-md-2">
+        <br>
+        <input id="submit_btn" type="submit" value="Get" class="btn btn-outline-dark" style="margin-top: 1ex;">
+      </div>
+    </div>
+</form>
+{% endblock %}

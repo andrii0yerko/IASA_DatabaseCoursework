@@ -52,7 +52,6 @@
   <script>
       function replaceUrl(column) {
         let nextURL = window.location.href.split(/[\?&]order=[^&]*/).join('');
-        console.log(nextURL);
         if (nextURL.includes('?')) {
           nextURL += '&order=' + column;
         }

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+{% if form_data|length > 0 %}
+    <form method="POST">
+        <div class="form-row">
+        {% for (value, (name, type, nullable)) in form_data %}
+            {% if type != 'hidden' %}
+            <div class="form-group col-md-3">
+                <label for="{{ name }}">
+                    {{ name.replace('_', ' ').title() }}
+                </label>
+                <br>
+                {% if type != 'checkbox' %}
+                    <input list="{{ name }}_list" type="{{ type }}" id="{{ name }}" class="form-control"
+                    name="{{ name }}" value="{{ value }}" />
+
+                    <datalist id="{{ name }}_list">
+                    {% for val, key in dropdown(name) %}
+                        <option value="{{ val }}"> {{ key }} </option>
+                    {% endfor %}
+                {% else %}
+                    <input type="checkbox" class="form-control" name="{{ name }}" value="True" 
+                    {% if value %} checked {% endif %}
+                    />
+                {% endif %}
+                </datalist>
+            </div>
+            {% else %} 
+                <input type="hidden" name="{{ name }}" value="{{ value }}" />
+            {% endif %}
+        {% endfor %}
+        </div>
+        <input type="submit" value="{{ button_text }}" class="btn btn-outline-dark" style="margin-top: 1ex;">
+    </form>
+{% endif %}
+
+{% endblock %}

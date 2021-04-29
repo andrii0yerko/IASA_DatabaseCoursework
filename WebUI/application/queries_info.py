@@ -1,4 +1,4 @@
-table_names = ['worker', 'retail_outlet', 'customer', 'supply', 'supply_request', 'products_description', 'purchase']
+table_names = ['worker', 'retail_outlet', 'customer', 'supply', 'supply_request', 'products_description', 'purchase', 'products_availability']
 
 
 # pg_func_name: [
@@ -77,6 +77,70 @@ queries = {
             ('after_date', 'date', True),
             ('before_date', 'date', True),
         ],
+    'retail_outlet_insert_or_update': [
+            ('_outlet_id', 'hidden', True),
+            ('_outlet_type', 'text', False),
+            ('_address', 'text', False),
+            ('_rent', 'text', False),
+            ('_utility', 'text', False),
+            ('_square', 'number', True),
+            ('_is_open', 'text', False),
+            ('_part_of', 'number', True)
+        ],
+    'worker_insert_or_update': [
+            ('_worker_id', 'hidden', True),
+            ('_full_name', 'text', False),
+            ('_worker_position', 'text', False),
+            ('_salary', 'text', False),
+            ('_birthdate', 'date', False),
+            ('_employment_date', 'date', False),
+            ('_outlet_id', 'number', False)
+        ],
+    'customer_insert_or_update': [
+            ('_customer_id', 'hidden', True),
+            ('_full_name', 'text', False),
+            ('_birthdate', 'date', True),
+            ('_gender', 'text', True),
+            ('_phone', 'text', False),
+            ('_email', 'text', True),
+            ('_club_member', 'text', True)
+        ],
+    'products_description_insert_or_update': [
+            ('product', 'hidden', True),
+            ('_product_name', 'text', False),
+            ('_category', 'text', False),
+            ('_description', 'text', True),
+            ('_is_available', 'text', True)
+        ],
+    'products_availability_insert_or_update': [
+            ('_availability_id', 'hidden', True),
+            ('product', 'number', False),
+            ('_outlet_id', 'number', False),
+            ('_amount', 'number', False),
+            ('_price', 'text', False),
+            ('_discount', 'number', True)
+        ],
+    'supply_insert_or_update': [
+            ('_supply_id', 'hidden', True),
+            ('_manager_id', 'number', True),
+            ('supplier_name', 'text', False),
+            ('product', 'number', False),
+            ('_amount', 'number', False),
+            ('_total_price', 'text', False),
+            ('_supply_date', 'date', False),
+            ('_supply_comment', 'text', True)
+        ],
+    'supply_request_insert_or_update': [
+            ('request_id', 'hidden', True),
+            ('_worker_id', 'number', False),
+            ('_outlet_id', 'number', False),
+            ('product', 'number', False),
+            ('_amount', 'number', False),
+            ('_request_date', 'date', False),
+            ('_request_comment', 'text', True),
+            ('_is_completed', 'text', False),
+            ('_completed_by', 'number', True)
+    ]
 }
 
 
@@ -139,5 +203,48 @@ dropdown_queries = {
             CONCAT('All of the ', ro.outlet_type, ' type')
         FROM
             retail_outlet ro;
+    ''',
+    
+    '_customer_id': '''
+        SELECT
+            c.customer_id,
+            c.full_name
+        FROM
+            customer c
+        ORDER BY
+            c.customer_id;
+    ''',
+        
+    '_availability_id': '''
+        SELECT
+            pa.availability_id,
+            CONCAT(pd.product_name, ' (', pa.product_id, ') ', ' at ', ro.address)
+        FROM
+            products_availability pa
+            JOIN products_description pd ON pa.product_id = pd.product_id
+            JOIN retail_outlet ro ON ro.retail_outlet_id = pa.retail_outlet_id
+        ORDER BY
+            pa.availability_id;
+    ''',
+    
+    '_supply_id': '''
+        SELECT
+            s.supply_id,
+            CONCAT(pd.product_name, ' by ', s.supplier, ', ', s.supply_date)
+        FROM
+            supply s
+            JOIN products_description pd ON s.product_id = pd.product_id
+        ORDER BY
+            supply_id;
     '''
+}
+
+id_param_map = {
+    'retail_outlet': '_outlet_id',
+    'products_description': 'product',
+    'worker': '_worker_id',
+    'customer': '_customer_id',
+    'supply': '_supply_id',
+    'supply_request': 'request_id',
+    'products_availability': '_availability_id'
 }
