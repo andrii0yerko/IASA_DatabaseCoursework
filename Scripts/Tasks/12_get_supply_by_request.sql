@@ -63,7 +63,7 @@ BEGIN
             sr.supply_request_id = request_id;
     END IF;
 END;
-$$
+$$;
 
 
 -- examples

@@ -1,12 +1,12 @@
 --
-DROP TABLE public.purchase;
-DROP TABLE public.supply_request;
-DROP TABLE public.supply;
-DROP TABLE public.products_availability;
-DROP TABLE public.worker;
-DROP TABLE public.products_description;
-DROP TABLE public.retail_outlet;
-DROP TABLE public.customer;
+--DROP TABLE public.purchase;
+--DROP TABLE public.supply_request;
+--DROP TABLE public.supply;
+--DROP TABLE public.products_availability;
+--DROP TABLE public.worker;
+--DROP TABLE public.products_description;
+--DROP TABLE public.retail_outlet;
+--DROP TABLE public.customer;
 
 
 CREATE TABLE public.retail_outlet (

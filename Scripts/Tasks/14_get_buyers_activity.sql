@@ -29,7 +29,7 @@ BEGIN
     ORDER BY
         money_spent DESC;
 END;
-$$
+$$;
 
 -- for specific outlet
 CREATE OR REPLACE FUNCTION get_buyers_activity (outlet int)
@@ -63,7 +63,7 @@ BEGIN
     ORDER BY
         money_spent DESC;
 END;
-$$
+$$;
 
 -- for specific outlet type
 CREATE OR REPLACE FUNCTION get_buyers_activity (outlet varchar)
@@ -94,7 +94,7 @@ BEGIN
     ORDER BY
         money_spent DESC;
 END;
-$$
+$$;
 
 -- examples
 --SELECT (get_buyers_activity()).*;

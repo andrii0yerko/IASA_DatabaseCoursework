@@ -55,7 +55,7 @@ BEGIN
         JOIN cte_salary s ON r.retail_outlet_id = s.retail_outlet_id
         JOIN cte_income i ON r.retail_outlet_id = i.retail_outlet_id;
 END;
-$$
+$$;
 
 
 -- examples

@@ -37,7 +37,7 @@ BEGIN
                 WHERE ro.part_of = outlet)
             );
 END;
-$$
+$$;
 
 -- for specific outlet type
 CREATE OR REPLACE FUNCTION get_product_buyers_by_outlet (
@@ -67,7 +67,7 @@ BEGIN
         AND product_id = product
         AND ro.outlet_type = outlet;
 END;
-$$
+$$;
 
 -- examples
 --SELECT (get_product_buyers_by_outlet(2, 2)).*;

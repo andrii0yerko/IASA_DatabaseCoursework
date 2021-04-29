@@ -30,7 +30,7 @@ BEGIN
         AND p.purchase_time BETWEEN after_date AND before_date
         AND amount > minimal_amount;
 END;
-$$
+$$;
 
 --examples
 --SELECT (get_product_buyers (19)).*;

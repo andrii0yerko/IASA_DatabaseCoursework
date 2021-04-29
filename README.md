@@ -28,19 +28,17 @@ source env/bin/activate
 ```
 Then install dependencies with
 ```bash
-pip3 install -r requirements.txt
+pip3 install -r ../requirements.txt
 ```
 
 The application requires some environmental variables defined:
 ```bash
-# username of your Postgres user
+# admin username 
 export ADMIN_USERNAME="username"
-# password for your Postgres user
+# admin password
 export ADMIN_PASSWORD="password"
-# name of database you are going to use
-export DATABASE_NAME="postgres"
 # url of your database server
-export DATABASE_URL="localhost"
+export DATABASE_URL="postgres://username:password@host:port/database_name"
 # application secret key
 export SECRET_KEY="my-secret-key"
 ```

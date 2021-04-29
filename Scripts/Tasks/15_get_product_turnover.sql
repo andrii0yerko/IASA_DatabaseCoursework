@@ -77,7 +77,7 @@ BEGIN
     ORDER BY
         outlet, product;
 END;
-$$
+$$;
 
 
 -- examples

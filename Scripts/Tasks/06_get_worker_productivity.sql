@@ -37,7 +37,7 @@ BEGIN
         s.worker = _worker_id
         AND s.outlet_id = _outlet_id;
 END;
-$$
+$$;
 
 get_workers_productivity(NULL,)
 -- examples

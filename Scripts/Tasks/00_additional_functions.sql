@@ -8,7 +8,7 @@ BEGIN
     EXECUTE format('SELECT MIN(%s) FROM %s', column_name, table_name) INTO min_date;
     RETURN min_date;
 END;
-$$
+$$;
 
 --DROP FUNCTION latest_date;
 CREATE OR REPLACE FUNCTION latest_date (column_name text, table_name text) RETURNS date
@@ -20,7 +20,7 @@ BEGIN
     EXECUTE format('SELECT MAX(%s) FROM %s', column_name, table_name) INTO min_date;
     RETURN min_date;
 END;
-$$
+$$;
 
 
 --examples

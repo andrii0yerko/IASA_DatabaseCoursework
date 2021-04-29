@@ -41,7 +41,7 @@ BEGIN
         retail_outlet ro 
         JOIN purchase_aggregated p ON ro.retail_outlet_id = p.retail_outlet_id;
 END;
-$$
+$$;
 
 
 -- examples

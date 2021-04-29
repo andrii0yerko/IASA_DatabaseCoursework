@@ -63,7 +63,7 @@ BEGIN
                         FROM outlets
                     )));
 END;
-$$
+$$;
 
 -- examples
 --SELECT (get_workers_productivity ()).*;

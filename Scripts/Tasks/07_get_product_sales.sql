@@ -36,7 +36,7 @@ BEGIN
         AND p.product_id = product
         AND ro.outlet_type = outlet;
 END;
-$$
+$$;
 
 
 -- for specific outlet
@@ -72,7 +72,7 @@ BEGIN
                 FROM retail_outlet ro
                 WHERE ro.part_of = outlet));
 END;
-$$
+$$;
 
 
 -- for all outlets
@@ -102,7 +102,7 @@ BEGIN
         p.purchase_time BETWEEN after_date AND before_date
         AND p.product_id = product;
 END;
-$$
+$$;
 
 -- examples
 --SELECT (get_product_sales (2, 'Kiosk')).*;

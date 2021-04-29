@@ -32,7 +32,7 @@ BEGIN
             WHERE
                 ro.part_of = outlet);
 END;
-$$
+$$;
 
 -- for specific outlet type
 CREATE OR REPLACE FUNCTION get_salaries (outlet varchar)
@@ -64,7 +64,7 @@ BEGIN
             WHERE
                 ro2.outlet_type = outlet);
 END;
-$$
+$$;
 
 -- for all outlets
 CREATE OR REPLACE FUNCTION get_salaries ()
@@ -86,7 +86,7 @@ BEGIN
     FROM
         worker w;
 END;
-$$
+$$;
 
 
 -- examples

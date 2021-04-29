@@ -33,7 +33,7 @@ BEGIN
             WHERE
                 part_of = _outlet_id);
 END;
-$$
+$$;
 
 
 -- examples

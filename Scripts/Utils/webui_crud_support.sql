@@ -15,7 +15,7 @@ BEGIN
         c.contype = 'p' -- p = primary key constraint
         AND c.conrelid = CONCAT('public.', table_name)::REGCLASS -- regclass will type the name of the object to its internal oid
         );
-END
+end;
 $$
 
 

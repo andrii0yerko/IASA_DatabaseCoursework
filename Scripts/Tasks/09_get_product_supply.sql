@@ -43,7 +43,7 @@ BEGIN
         AND s.supplier = supplier_name
         AND s.supply_date BETWEEN after_date AND before_date;
 END;
-$$
+$$;
 
 -- examples
 --SELECT (get_product_supply (9, 'Yundt and Sons')).*;

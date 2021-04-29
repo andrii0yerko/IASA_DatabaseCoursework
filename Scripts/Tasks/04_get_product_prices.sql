@@ -29,7 +29,7 @@ BEGIN
         product_id = product
         AND ro.outlet_type = outlet;
 END;
-$$
+$$;
 
 -- for specific outlet
 CREATE OR REPLACE FUNCTION get_product_prices (
@@ -52,7 +52,7 @@ BEGIN
         pa.product_id = product
         AND pa.retail_outlet_id = outlet;
 END;
-$$
+$$;
 
 -- for all outlets
 CREATE OR REPLACE FUNCTION get_product_prices (
@@ -75,7 +75,7 @@ BEGIN
     WHERE
         product_id = product;
 END;
-$$
+$$;
 
 -- examples
 --SELECT (get_product_prices (30)).*;
