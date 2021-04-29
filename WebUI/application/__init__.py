@@ -11,13 +11,16 @@ app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 login = LoginManager(app)
 
-connection_params = {
-    'dbname': os.environ['DATABASE_NAME'],
-    'host': os.environ['DATABASE_URL'],
-    'user': os.environ['ADMIN_USERNAME'],
-    'user': os.environ['ADMIN_PASSWORD']
-}
-conn = psycopg2.connect(**connection_params)
+# connection_params = {
+#     'dbname': os.environ['DATABASE_NAME'],
+#     'host': os.environ['DATABASE_URL'],
+#     'user': os.environ['ADMIN_USERNAME'],
+#     'user': os.environ['ADMIN_PASSWORD']
+# }
+conn = psycopg2.connect(
+    # **connection_params
+    os.environ['DATABASE_URL']
+    )
 
 
 def generate_dropdown(argname):
