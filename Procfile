@@ -1,0 +1,1 @@
+web: cd WebUI && pip3 install -r requirements.txt && gunicorn main:app
