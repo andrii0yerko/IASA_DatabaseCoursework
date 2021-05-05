@@ -16,7 +16,7 @@ BEGIN
         AND c.conrelid = CONCAT('public.', table_name)::REGCLASS -- regclass will type the name of the object to its internal oid
         );
 end;
-$$
+$$;
 
 
 --DROP FUNCTION retail_outlet_insert_or_update;
@@ -57,7 +57,7 @@ BEGIN
     END IF;
     RETURN _outlet_id;
 END;
-$$
+$$;
 
 
 --SELECT retail_outlet_insert_or_update(8, 'test'::varchar, 'doesnt matt213er'::varchar, 200::money, 200::money, 200, TRUE, NULL);
@@ -99,7 +99,7 @@ BEGIN
     END IF;
     RETURN _worker_id;
 END;
-$$
+$$;
 
 -- drop function customer_insert_or_update
 CREATE OR REPLACE FUNCTION customer_insert_or_update (
@@ -137,7 +137,7 @@ BEGIN
     END IF;
     RETURN _customer_id;
 END;
-$$
+$$;
 
 --drop function products_description_insert_or_update
 CREATE OR REPLACE FUNCTION products_description_insert_or_update (
@@ -171,7 +171,7 @@ BEGIN
     END IF;
     RETURN product;
 END;
-$$
+$$;
 
 --drop function products_availability_insert_or_update
 CREATE OR REPLACE FUNCTION products_availability_insert_or_update (
@@ -207,7 +207,7 @@ BEGIN
     END IF;
     RETURN _availability_id;
 END;
-$$
+$$;
 
 --DROP FUNCTION supply__insert_or_update
 CREATE OR REPLACE FUNCTION supply_insert_or_update (
@@ -247,7 +247,7 @@ BEGIN
     END IF;
     RETURN _supply_id;
 END;
-$$
+$$;
 
 
 --drop function supply_requests_availability_insert_or_update
@@ -290,4 +290,49 @@ BEGIN
     END IF;
     RETURN request_id;
 END;
-$$
+$$;
+
+
+--drop function purchase_insert_or_update
+CREATE OR REPLACE FUNCTION purchase_insert_or_update (
+    product int4,
+    _total_price money,
+    _purchase_time timestamp,
+    _outlet_id int4,
+    _worker_id int4,
+    _amount int4 DEFAULT 1,
+    _customer_id int4 DEFAULT NULL,
+    _purchase_id int4 DEFAULT null,
+    _same_purchase int4 DEFAULT null
+)
+RETURNS int
+LANGUAGE plpgsql
+AS $$
+BEGIN 
+    IF _purchase_id IS NULL THEN  -- INSERT
+        _purchase_id := (
+            SELECT max(p.purchase_id+1) FROM purchase p
+        );
+        INSERT INTO
+            purchase(purchase_id, product_id, amount, total_price, purchase_time, customer_id, retail_outlet_id, same_purchase, worker_id)
+        VALUES
+            (_purchase_id, product, _amount, _total_price, _purchase_time, _customer_id, _outlet_id, _same_purchase, _worker_id);
+    ELSE  -- update
+        UPDATE purchase AS p
+        SET
+            product_id = product,
+            amount = _amount,
+            total_price = _total_price,
+            purchase_time = _purchase_time,
+            customer_id = _customer_id,
+            retail_outlet_id = _outlet_id,
+            same_purchase = _same_purchase,
+            worker_id = _worker_id
+        WHERE 
+            p.purchase_id = _purchase_id; 
+    END IF;
+    RETURN _purchase_id;
+END;
+$$;
+
+select purchase_insert_or_update(2, '$13.90', '2020-08-08 00:19', 1, null,)

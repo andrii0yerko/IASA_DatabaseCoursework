@@ -14,7 +14,7 @@
                 <br>
                 {% if type != 'checkbox' %}
                     <input list="{{ name }}_list" type="{{ type }}" id="{{ name }}" class="form-control"
-                    name="{{ name }}" value="{{ value }}" />
+                    name="{{ name }}" value="{{ make_form_value(value, type) }}" />
 
                     <datalist id="{{ name }}_list">
                     {% for val, key in dropdown(name) %}

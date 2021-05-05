@@ -1,6 +1,6 @@
 from flask import render_template, flash
 
-from application import app, conn
+from application import app, db
 
 
 @app.errorhandler(404)
@@ -16,5 +16,5 @@ def unauthorized(e):
 
 @app.errorhandler(500)
 def internal_error(e):
-    conn.rollback()
+    db.conn.rollback()
     return render_template("500.html")

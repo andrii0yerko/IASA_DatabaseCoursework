@@ -140,6 +140,17 @@ queries = {
             ('_request_comment', 'text', True),
             ('_is_completed', 'text', False),
             ('_completed_by', 'number', True)
+        ],
+    'purchase_insert_or_update': [
+            ('_purchase_id', 'hidden', True),
+            ('product', 'number', False),
+            ('_amount', 'number', True),
+            ('_total_price', 'text', False),
+            ('_purchase_time', 'datetime-local', False),
+            ('_customer_id', 'number', True),
+            ('_outlet_id', 'number', False),
+            ('_same_purchase', 'number', True),
+            ('_worker_id', 'number', False)
     ]
 }
 
@@ -246,5 +257,6 @@ id_param_map = {
     'customer': '_customer_id',
     'supply': '_supply_id',
     'supply_request': 'request_id',
-    'products_availability': '_availability_id'
+    'products_availability': '_availability_id',
+    'purchase': '_purchase_id'
 }
