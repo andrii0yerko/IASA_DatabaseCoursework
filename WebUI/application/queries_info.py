@@ -1,4 +1,4 @@
-table_names = ['worker', 'retail_outlet', 'customer', 'supply', 'supply_request', 'products_description', 'purchase', 'products_availability']
+TABLE_NAMES = ['worker', 'retail_outlet', 'customer', 'supply', 'supply_request', 'products_description', 'purchase', 'products_availability']
 
 
 # pg_func_name: [
@@ -6,8 +6,7 @@ table_names = ['worker', 'retail_outlet', 'customer', 'supply', 'supply_request'
 #     (...) #arg2
 #     ...
 # ]
-
-queries = {
+QUERIES = {
     'get_product_turnover': [
             ('after_date', 'date', False),
             ('before_date', 'date', False)
@@ -155,7 +154,7 @@ queries = {
 }
 
 
-dropdown_queries = {
+DROPDOWN_QUERIES = {
     'product': '''
         SELECT DISTINCT
             product_id,
@@ -250,7 +249,7 @@ dropdown_queries = {
     '''
 }
 
-id_param_map = {
+ID_PARAM_MAP = {
     'retail_outlet': '_outlet_id',
     'products_description': 'product',
     'worker': '_worker_id',

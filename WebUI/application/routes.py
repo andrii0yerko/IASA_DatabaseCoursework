@@ -2,7 +2,7 @@ from flask import abort, render_template, request, flash, redirect
 from flask_login import login_required
 
 from application import app, db
-from .queries_info import table_names, queries, id_param_map
+from .queries_info import TABLE_NAMES, QUERIES, ID_PARAM_MAP
 
 
 @app.route('/')
@@ -12,7 +12,7 @@ def index():
 
 @app.route('/table/<string:table_name>')
 def select_table(table_name):
-    if table_name not in table_names:
+    if table_name not in TABLE_NAMES:
         abort(404)
     
     select_params = {'table_name': table_name}
@@ -28,34 +28,35 @@ def select_table(table_name):
 @app.route('/table/<string:table_name>/insert', methods=['GET', 'POST'])
 @login_required
 def insert(table_name):
-    if table_name not in table_names:
+    if table_name not in TABLE_NAMES:
         abort(404)
         
     query_name = table_name + '_insert_or_update'
-    id_name = id_param_map[table_name]
+    id_name = ID_PARAM_MAP[table_name]
     
     if request.method == 'GET':
-        record = ['' for _ in queries[query_name]]
+        record = ['' for _ in QUERIES[query_name]]
         return render_template('content_form.html', title='Insert '+table_name.replace('_', ' ').title(),
-                               form_data=list(zip(record, queries[query_name]))[1:],
+                               form_data=list(zip(record, QUERIES[query_name]))[1:],
                                button_text='Add')
         
     if request.method == 'POST':
-        _, args = parse_args("form", query_name)
-        records, _ = db.run_pgfunc(query_name, args, commit=True)
-        if len(records) > 0:
-            flash("Successfully added")
+        run_query, args = parse_args("form", query_name)
+        if run_query:
+            records, _ = db.run_pgfunc(query_name, args, commit=True)
+            if len(records) > 0:
+                flash("Successfully added")
         return redirect(f'/table/{table_name}/insert')
 
 
 @app.route('/table/<string:table_name>/edit', methods=['GET', 'POST'])
 @login_required
 def edit(table_name):
-    if table_name not in table_names:
+    if table_name not in TABLE_NAMES:
         abort(404)
     
     query_name = table_name + '_insert_or_update'
-    id_name = id_param_map[table_name]
+    id_name = ID_PARAM_MAP[table_name]
     
     if request.method == 'GET':
         arg = ''
@@ -69,14 +70,15 @@ def edit(table_name):
                 flash(f"Enter the correct {id_name.replace('_', ' ').title()} value")
         
         return render_template('content_form_id.html', title='Edit '+table_name.replace('_', ' ').title(),
-                               id_name=id_name, id_val=arg, form_data=list(zip(record, queries[query_name])),
+                               id_name=id_name, id_val=arg, form_data=list(zip(record, QUERIES[query_name])),
                                button_text='Save')
         
     if request.method == 'POST':
-        _, args = parse_args("form", query_name)
-        records, _ = db.run_pgfunc(query_name, args, commit=True)
-        if len(records) > 0:
-            flash("Successfully updated")
+        run_query, args = parse_args("form", query_name)
+        if run_query:
+            records, _ = db.run_pgfunc(query_name, args, commit=True)
+            if len(records) > 0:
+                flash("Successfully updated")
         return redirect(f'/table/{table_name}/edit?{id_name}={args[id_name]}')
         
 
@@ -84,11 +86,11 @@ def edit(table_name):
 @app.route('/table/<string:table_name>/delete', methods=['GET', 'POST'])
 @login_required
 def delete(table_name):
-    if table_name not in table_names:
+    if table_name not in TABLE_NAMES:
         abort(404)
     
     query_name = table_name + '_insert_or_update'
-    id_name = id_param_map[table_name]
+    id_name = ID_PARAM_MAP[table_name]
     
     if request.method == 'GET':
         arg = ''
@@ -102,7 +104,7 @@ def delete(table_name):
             else:
                 flash(f"Enter the correct {id_name.replace('_', ' ').title()} value")
         return render_template('content_form_id.html', title='Delete '+table_name.replace('_', ' ').title(),
-                               id_name=id_name, id_val=arg, form_data=list(zip(record, queries[query_name])),
+                               id_name=id_name, id_val=arg, form_data=list(zip(record, QUERIES[query_name])),
                                button_text='Delete')
         
     if request.method == 'POST':
@@ -116,7 +118,7 @@ def delete(table_name):
 
 @app.route('/query/<string:query_name>')
 def query_page(query_name):
-    if query_name not in queries:
+    if query_name not in QUERIES:
         abort(404)
     
     records = []
@@ -125,7 +127,7 @@ def query_page(query_name):
     order_col = args.pop('order', None)
     if run_query:
         records, columns = db.run_pgfunc(query_name, args, order_col)
-    return render_template('form.html', form_data=queries[query_name], args=args,
+    return render_template('form.html', form_data=QUERIES[query_name], args=args,
                             table=records, columns=columns,
                             title=query_name.replace('_', ' ').title(),
                             id_first=False)
@@ -146,7 +148,7 @@ def parse_args(parse_from="url", query_name=None, order=True):
     if len(request_args) > 0:
         if order and 'order' in request_args:
             args['order'] = request_args['order']
-        for key, argtype, nullable in queries[query_name]:
+        for key, argtype, nullable in QUERIES[query_name]:
             if not nullable and (key not in request_args or request_args[key]==''):
                 flash(key.replace('_', ' ').title() + " field is required")
                 run_query = False
