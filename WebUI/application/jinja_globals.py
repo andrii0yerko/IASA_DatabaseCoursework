@@ -23,9 +23,10 @@ def generate_dropdown(argname):
 
 
 def make_form_value(value, formtype):
-    if value is None:
+    if value is None or value == '':
         return ''
     elif formtype == 'datetime-local':
+        print(value)
         return value.strftime('%Y-%m-%dT%H:%M')
     return value
 

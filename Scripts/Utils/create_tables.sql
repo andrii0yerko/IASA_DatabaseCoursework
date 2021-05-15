@@ -19,7 +19,9 @@ CREATE TABLE public.retail_outlet (
 	is_open bool NOT NULL DEFAULT true,
 	part_of int4 NULL,
 	CONSTRAINT retail_outlet_pk PRIMARY KEY (retail_outlet_id),
-	CONSTRAINT retail_outlet_fk FOREIGN KEY (part_of) REFERENCES retail_outlet(retail_outlet_id)
+	CONSTRAINT retail_outlet_fk FOREIGN KEY (part_of) REFERENCES retail_outlet(retail_outlet_id),
+	CONSTRAINT retail_outlet_check CHECK ((utility >= 0::money) and (rent >= 0::money) and (square >= 0))
+
 );
 
 
@@ -31,7 +33,8 @@ CREATE TABLE public.worker (
 	birthdate date NULL,
 	employment_date date NOT NULL,
 	retail_outlet_id int4 NULL,
-	CONSTRAINT worker_pk PRIMARY KEY (worker_id)
+	CONSTRAINT worker_pk PRIMARY KEY (worker_id),
+	CONSTRAINT worker_check CHECK (salary >= 0::money)
 );
 
 
@@ -72,7 +75,8 @@ CREATE TABLE public.products_availability (
     discount float4 NOT NULL DEFAULT 0,
     CONSTRAINT products_amount_check CHECK ((amount >= 0)),
     CONSTRAINT products_availability_pk PRIMARY KEY (availability_id),
-    CONSTRAINT products_discount_check CHECK (((discount >= (0)::double precision) AND (discount < (1)::double precision)))
+    CONSTRAINT products_discount_check CHECK (((discount >= (0)::double precision) AND (discount < (1)::double precision))),
+    CONSTRAINT products_availability_check CHECK (price >= 0::money);
 );
 
 
@@ -97,7 +101,8 @@ CREATE TABLE public.purchase (
 	retail_outlet_id int4 NOT NULL,
 	same_purchase int4 NULL,
 	worker_id int4 NULL,
-	CONSTRAINT purchase_pk PRIMARY KEY (purchase_id)
+	CONSTRAINT purchase_pk PRIMARY KEY (purchase_id),
+	CONSTRAINT purchase_check CHECK ((amount > 0) and (total_price >= 0::money))
 );
 
 
@@ -120,7 +125,8 @@ CREATE TABLE public.supply_request (
 	request_comment text NULL,
 	is_completed bool NOT NULL DEFAULT false,
 	completed_by int4 NULL,
-	CONSTRAINT supply_request_pk PRIMARY KEY (supply_request_id)
+	CONSTRAINT supply_request_pk PRIMARY KEY (supply_request_id),
+	CONSTRAINT supply_request_check CHECK (amount > 0)
 );
 
 
@@ -140,13 +146,14 @@ CREATE TABLE public.supply (
 	total_price money NOT NULL,
 	supply_date date NOT NULL,
 	supply_comment text NULL,
-	CONSTRAINT supply_pk PRIMARY KEY (supply_id)
+	CONSTRAINT supply_pk PRIMARY KEY (supply_id),
+	CONSTRAINT supply_check CHECK ((amount > 0) and (total_price >= 0::money))
+
 );
 
 
 
 ALTER TABLE public.supply ADD CONSTRAINT supply_fk FOREIGN KEY (manager_id) REFERENCES worker(worker_id);
 ALTER TABLE public.supply ADD CONSTRAINT supply_fk_1 FOREIGN KEY (product_id) REFERENCES products_description(product_id);
-
-
 ALTER TABLE public.supply_request ADD CONSTRAINT supply_request_fk_3 FOREIGN KEY (completed_by) REFERENCES public.supply(supply_id);
+
