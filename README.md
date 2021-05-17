@@ -1,7 +1,7 @@
 # Database Coursework
 Coursework on databases: simple retail organization database implementation. IASA, KPI, 2021.
 
-Made with [PostreSQL](https://www.postgresql.org/) and [Flask](https://flask.palletsprojects.com/) + [Bootstrap](https://getbootstrap.com/) for Web UI.
+Made with [PostgreSQL](https://www.postgresql.org/) and [Flask](https://flask.palletsprojects.com/) + [Bootstrap](https://getbootstrap.com/) for Web UI.
 
 ## Database preparing
 _SQL Scripts are Postgres-specific, and won't run in other DBMS_
